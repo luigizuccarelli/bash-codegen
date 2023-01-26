@@ -1,0 +1,27 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: cosa-build-baseos
+spec:
+  steps:
+    - image: 'quay.io/coreos-assembler/coreos-assembler:latest'
+      name: fetch-and-build-baseos
+      resources:
+        limits:
+          cpu: 1000m
+          devices.kubevirt.io/kvm: '1'
+          memory: 4Gi
+        requests:
+          cpu: 1000m
+          devices.kubevirt.io/kvm: '1'
+          memory: 4Gi
+      script: |
+        #!/usr/bin/env bash
+        set -euxo pipefail
+        cd /srv/coreos
+        cosa fetch
+        cosa build ostree
+  workspaces:
+    - mountPath: /srv
+      name: ws
+

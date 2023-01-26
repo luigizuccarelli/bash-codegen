@@ -1,0 +1,47 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+  name: event-binding
+spec:
+  params:
+    - name: gitrevision
+      value: $(body.head_commit.id)
+    - name: gitrepositoryurl
+      value: $(body.repository.url)
+---
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+  name: prod-env
+spec:
+  params:
+    - name: environment
+      value: prod
+---
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+  name: staging-env
+spec:
+  params:
+    - name: environment
+      value: staging
+---
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: EventListener
+metadata:
+  name: listener
+spec:
+  triggers:
+    - name: prod-trigger
+      bindings:
+        - ref: event-binding
+        - ref: prod-env
+      template:
+        ref: pipeline-template
+    - name: staging-trigger
+      bindings:
+        - ref: event-binding
+        - ref: staging-env
+      template:
+        ref: pipeline-template

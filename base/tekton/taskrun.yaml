@@ -1,0 +1,23 @@
+apiVersion: tekton.dev/v1beta1 
+kind: Task                     
+metadata:
+  name: workspace-propagation
+spec:
+  steps:
+    - name: simple-step        
+      image: ubuntu            
+      command:                 
+        - echo                 
+      args:                    
+        - $(workspaces.tr-workspace.path)
+---
+apiVersion: tekton.dev/v1beta1 
+kind: TaskRun
+metadata:
+  generateName: propagating-workspaces-
+spec:
+  taskRef:                     
+    name: workspace-propagation
+  workspaces:                  
+  - emptyDir: {}               
+    name: tr-workspace 
