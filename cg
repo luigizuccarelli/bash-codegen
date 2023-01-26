@@ -1,8 +1,31 @@
 #!/bin/bash
 
-case ${2} in
-  -y)
-    cat base/${1}/${1}.yaml | xclip -sel c &> /dev/null 
-  ;;
+BASE_DIR=$HOME/.codegen
+
+case ${1} in 
+    install)
+        echo -e "installing"
+        mkdir $BASE_DIR
+        cp -r base $BASE_DIR
+        sudo cp cg /usr/local/bin
+        sudo chmod 755 /usr/local/bin/cg
+        exit 0
+    ;;
 esac
+
+case ${2} in
+    -y)
+        cat $BASE_DIR/base/yaml/${1}.yaml | xclip -sel c &> /dev/null
+    ;;
+    -g)
+        cat $BASE_DIR/base/go/${1}.go | xclip -sel c &> /dev/null
+    ;;
+    -r)
+        cat $BASE_DIR/base/rust/${1}.rs | xclip -sel c &> /dev/null
+    ;;
+    -b)
+        cat $BASE_DIR/base/bash/${1}.sh | xclip -sel c &> /dev/null
+    ;;
+esac
+
 exit 0
