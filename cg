@@ -3,9 +3,9 @@
 BASE_DIR=$HOME/.codegen
 
 if [ "$#" -ne 2 ]; then
-  echo "Usage a: cg help [type] - type can be one of (-b,-g,-r,-y)"
+  echo "Usage a: cg help [type] - type can be one of (-b,-g,-r,-t,-y)"
   echo "Usage b: cg [object] [type] - where object is a list from help"
-  echo "         (see above help command) and type is one of (-b,-g,-r,-y)"
+  echo "         (see above help command) and type is one of (-b,-g,-r,-t,-y)"
   exit 0
 fi
 
@@ -21,6 +21,9 @@ case ${1} in
         ;;
         -r)
           ls -la $BASE_DIR/base/rust | awk '{print $9}' | grep -E [a-zA-Z] | cut -f 1 -d '.'
+        ;;
+        -t)
+          ls -la $BASE_DIR/base/tekton | awk '{print $9}' | grep -E [a-zA-Z] | cut -f 1 -d '.'
         ;;
         -b)
           ls -la $BASE_DIR/base/bash | awk '{print $9}' | grep -E [a-zA-Z] | cut -f 1 -d '.'
@@ -40,6 +43,9 @@ case ${2} in
     ;;
     -r)
         cat $BASE_DIR/base/rust/${1}.rs #| xclip -sel c &> /dev/null
+    ;;
+    -t)
+        cat $BASE_DIR/base/tekton/${1}.yaml #| xclip -sel c &> /dev/null
     ;;
     -b)
         cat $BASE_DIR/base/bash/${1}.sh #| xclip -sel c &> /dev/null
