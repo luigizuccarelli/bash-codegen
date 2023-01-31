@@ -1,0 +1,38 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: release
+spec:
+  lookupPolicy:
+    local: true
+  tags:
+    - name: kuryr-cni
+      from:
+        kind: DockerImage
+        name: registry.access.redhat.com/ubi9-minimal:9.0.0
+      referencePolicy:
+        type: Source
+    - name: kuryr-controller
+      from:
+        kind: DockerImage
+        name: registry.access.redhat.com/ubi9-minimal:9.0.0
+      referencePolicy:
+        type: Source
+    - name: powervs-block-csi-driver-operator
+      from:
+        kind: DockerImage
+        name: registry.access.redhat.com/ubi9-minimal:9.0.0
+      referencePolicy:
+        type: Source
+    - name: powervs-block-csi-driver
+      from:
+        kind: DockerImage
+        name: registry.access.redhat.com/ubi9-minimal:9.0.0
+      referencePolicy:
+        type: Source
+    - name: ibmcloud-cluster-api-controllers
+      from:
+        kind: DockerImage
+        name: registry.access.redhat.com/ubi9-minimal:9.0.0
+      referencePolicy:
+        type: Source

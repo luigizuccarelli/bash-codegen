@@ -1,0 +1,12 @@
+#!/bin/bash
+
+BASE_DIR=$HOME/.codegen
+
+echo -e "installing codegen"
+mkdir -p $BASE_DIR
+cp -r base $BASE_DIR
+sudo cp cg /usr/local/bin
+sudo chmod 755 /usr/local/bin/cg
+sleep 2
+echo -e "installed codegen"
+exit 0

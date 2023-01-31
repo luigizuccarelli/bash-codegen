@@ -2,30 +2,47 @@
 
 BASE_DIR=$HOME/.codegen
 
+if [ "$#" -ne 2 ]; then
+  echo "Usage a: cg help [type] - type can be one of (-b,-g,-r,-y)"
+  echo "Usage b: cg [object] [type] - where object is a list from help"
+  echo "         (see above help command) and type is one of (-b,-g,-r,-y)"
+  exit 0
+fi
+
+
 case ${1} in 
-    install)
-        echo -e "installing"
-        mkdir $BASE_DIR
-        cp -r base $BASE_DIR
-        sudo cp cg /usr/local/bin
-        sudo chmod 755 /usr/local/bin/cg
-        exit 0
+    help)
+      case ${2} in
+        -y)
+          ls -la $BASE_DIR/base/yaml | awk '{print $9}' | grep -E [a-zA-Z] | cut -f 1 -d '.'
+        ;;
+        -g)
+          ls -la $BASE_DIR/base/go | awk '{print $9}' | grep -E [a-zA-Z] | cut -f 1 -d '.'
+        ;;
+        -r)
+          ls -la $BASE_DIR/base/rust | awk '{print $9}' | grep -E [a-zA-Z] | cut -f 1 -d '.'
+        ;;
+        -b)
+          ls -la $BASE_DIR/base/bash | awk '{print $9}' | grep -E [a-zA-Z] | cut -f 1 -d '.'
+        ;;
+      esac
+      exit 0
     ;;
 esac
 
+# when using object we fall into this case selector
 case ${2} in
     -y)
-        cat $BASE_DIR/base/yaml/${1}.yaml | xclip -sel c &> /dev/null
+        cat $BASE_DIR/base/yaml/${1}.yaml #| xclip -sel c &> /dev/null
     ;;
     -g)
-        cat $BASE_DIR/base/go/${1}.go | xclip -sel c &> /dev/null
+        cat $BASE_DIR/base/go/${1}.go #| xclip -sel c &> /dev/null
     ;;
     -r)
-        cat $BASE_DIR/base/rust/${1}.rs | xclip -sel c &> /dev/null
+        cat $BASE_DIR/base/rust/${1}.rs #| xclip -sel c &> /dev/null
     ;;
     -b)
-        cat $BASE_DIR/base/bash/${1}.sh | xclip -sel c &> /dev/null
+        cat $BASE_DIR/base/bash/${1}.sh #| xclip -sel c &> /dev/null
     ;;
 esac
-
 exit 0

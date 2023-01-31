@@ -1,0 +1,31 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: base
+spec:
+  source:
+    type: Git
+    git:
+      uri: 'https://github.com/openshift/images'
+      ref: release-4.12
+    contextDir: base
+    images:
+      - from:
+          kind: ImageStreamTag
+          name: 'release:forked-dockerfiles'
+        paths:
+        - sourcePath: /code/base/Dockerfile.centos9
+          destinationDir: "./base"
+  strategy:
+    type: Docker
+    dockerStrategy:
+      imageOptimizationPolicy: SkipLayers
+      dockerfilePath: Dockerfile.centos9
+      from:
+        kind: "ImageStreamTag"
+        name: "release:builder"
+
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'release:base'
